@@ -9,7 +9,8 @@ mongoose.connect(process.env.MONGODB_URL, {
 });
 
 router.get('/', async(req,res )=> {
-    res.send("Route works, asshole!");
+    const todoData = await Todo.find({});
+    res.status(200).json(todoData)
 })
 
 router.post('/create', async(req,res)=> {

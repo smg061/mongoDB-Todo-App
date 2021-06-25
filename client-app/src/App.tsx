@@ -1,12 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import {Header, List} from 'semantic-ui-react';
 import './App.css';
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  useEffect(() =>{
+    axios.get('http://localhost:3001/api/test/', {})
+    .then(res => {
+      console.log(res);
+      setTodos(res.data);
+    })
+  }, [])
+
   return (
     <div className="App">
+      <Header as="h2" icon='users' content='Todos'/>
+      <List>
+          {todos.map((todo: any)=> (
+          <List.Item key={todo.id}>
+            {todo.record}
+          </List.Item>
+        ))}
+      </List>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src="" className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
