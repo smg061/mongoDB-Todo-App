@@ -1,12 +1,9 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
+const mongoose = require('../../config/mongoose')
 const Todo = require('../../models/todo')
 require('dotenv').config();
 
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser:true,
-    useUnifiedTopology: true,
-});
+
 
 router.get('/', async(req,res )=> {
     const todoData = await Todo.find({});

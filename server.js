@@ -1,9 +1,10 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 const app = express();
-const routes = require('./controllers');
+const routes = require("./controllers");
 const PORT = 3001 || process.env.PORT;
-const cors = require('cors');
+const connectToDb = require("./config/mongoose");
+const cors = require("cors");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -12,13 +13,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.static(path.join(__dirname, 'public' )));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(routes);
 
 
-app.listen(PORT, () => {
+connectToDb().then(() => {
+  app.listen(PORT, () => {
     console.log(`Server Listening on port ${PORT}`);
-})
+  });
+});

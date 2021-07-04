@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Header, List} from 'semantic-ui-react';
 import './App.css';
+import FormComponent from './Form'
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -11,7 +12,7 @@ function App() {
       console.log(res);
       setTodos(res.data);
     })
-  }, [])
+  }, [todos])
 
   return (
     <div className="App">
@@ -23,6 +24,9 @@ function App() {
           </List.Item>
         ))}
       </List>
+
+      <FormComponent/>
+      
       <header className="App-header">
         <img src="" className="App-logo" alt="logo" />
         <p>
