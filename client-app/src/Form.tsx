@@ -1,40 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import { Form, Button, Checkbox } from "semantic-ui-react";
-import { set } from "mongoose";
 
 const FormComponent = () => {
-  const [todo, setTodo] = useState("");
-  const [date, setDate] = useState(new Date())
-  const [completed, setCompleted] = useState(false)
-  const submitForm = () => {
-        setTodo("Henlo");
-        axios({
-          method: "POST",
-          url: "http://localhost:3001/api/test/create",
-          data: {
-            record: todo,
-            date: date,
-            completed: completed
-          },
-        });
+
+  const initialState = {
+    record: "",
+    date: new Date(),
+    completed: false
+  };
+
+  const [todo, setTodo] = useState(initialState);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement> ) => {
+    const {name, value} = event.target;
+    setTodo({...todo, [name]:value})
   }
+  const submitForm = () => {
+    axios({
+      method: "POST",
+      url: "http://localhost:3001/api/test/create",
+      data: {
+        record: todo.record,
+        date: new Date().toLocaleDateString(),
+        completed: false,
+      },
+    });
+  };
   return (
     <Form success onSubmit={submitForm}>
       <Form.Field>
         <label>Todo Title</label>
-        <input value={todo}onChange={(e)=> {setTodo(e.target.value)}} />
+        <Form.Input
+          value={todo.record}
+          name="record"
+          onChange={handleInputChange}
+        />
       </Form.Field>
       <Form.Field>
-        <label>Date</label>
-        <input placeholder={date.toLocaleString()} disabled />
+        <Form.Field>Date</Form.Field>
+        <Form.Input placeholder={todo.date} disabled />
       </Form.Field>
       <Form.Field>
-        <Checkbox label="Completed?" onChange={()=> {setCompleted(!completed)}}/>
+        <Form.Checkbox>
+
+        </Form.Checkbox>
       </Form.Field>
-      <Button type="submit">
-        Submit
-      </Button>
+      <Button type="submit">Submit</Button>
     </Form>
   );
 };
